@@ -8,25 +8,25 @@ from torchvision import transforms
 import random
 
 imagenet_templates_small = [
-    'a painting in the style of {}',
-    'a rendering in the style of {}',
-    'a cropped painting in the style of {}',
-    'the painting in the style of {}',
-    'a clean painting in the style of {}',
-    'a dirty painting in the style of {}',
-    'a dark painting in the style of {}',
+    'an image in the style of {}',
+    'art in the style of {}',
     'a picture in the style of {}',
-    'a cool painting in the style of {}',
-    'a close-up painting in the style of {}',
-    'a bright painting in the style of {}',
-    'a cropped painting in the style of {}',
-    'a good painting in the style of {}',
-    'a close-up painting in the style of {}',
     'a rendition in the style of {}',
-    'a nice painting in the style of {}',
-    'a small painting in the style of {}',
-    'a weird painting in the style of {}',
-    'a large painting in the style of {}',
+    '{} styled image',
+    '{}',
+    'photo that looks like {}',
+    '{} photo',
+    'image with {} style',
+    '{} and more',
+    'a nice photo in {} style',
+    '{} picture',
+    '{} image',
+    '#{}',
+    '{} art',
+    'digital illustration that looks like {}',
+    '{} illustration',
+    'image {}',
+    'in {}'
 ]
 
 imagenet_dual_templates_small = [
@@ -105,19 +105,9 @@ class PersonalizedBase(Dataset):
         new_image.paste(image, (0, 0), image)
         image = new_image.convert('RGB')
 
-        templates = [
-            'an image of {} in style of {}',
-            'a pretty picture of {} in style of {}',
-            'a clip art picture of {} in style of {}',
-            'an illustration of {} in style of {}',
-            'an icon with {} in style of {}',
-        ]
+        templates = imagenet_templates_small
 
-        filename = os.path.basename(self.image_paths[i % self.num_images])
-        filename_tokens = os.path.splitext(filename)[0].replace('_', '-').split('-')
-        filename_tokens = [token for token in filename_tokens if token.isalpha()]
-
-        text = random.choice(templates).format(' '.join(filename_tokens), self.placeholder_token)
+        text = random.choice(templates).format(self.placeholder_token)
         print(text)
 
         example["caption"] = text
